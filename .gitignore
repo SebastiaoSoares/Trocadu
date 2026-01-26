@@ -1,0 +1,127 @@
+# ==============================================================================
+# PYTHON CORE
+# ==============================================================================
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / Packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# ==============================================================================
+# AMBIENTES VIRTUAIS (VENV)
+# ==============================================================================
+# Padrões comuns de nomes de pastas de ambiente
+venv/
+.venv/
+env/
+.env/
+ENV/
+env.bak/
+venv.bak/
+
+# ==============================================================================
+# FASTAPI & WEB & DADOS
+# ==============================================================================
+# Arquivos de variáveis de ambiente (CRÍTICO: contém senhas/chaves)
+.env
+.env.local
+.env.*
+
+# Banco de dados local (SQLite) - Mencionado na Arquitetura
+*.sqlite3
+*.db
+*.db-journal
+
+# Logs gerais
+*.log
+
+# ==============================================================================
+# PROJETO TROCADU (ESPECÍFICO)
+# ==============================================================================
+# Ignora logs de partidas, mas mantém a pasta data/
+data/partidas.log
+data/*.log
+
+# Se as palavras personalizadas não devem ir para o git:
+# data/palavras_custom.json
+
+# Mantém o arquivo .gitkeep se as pastas estiverem vazias, mas ignora o conteúdo
+# data/.gitkeep
+
+# ==============================================================================
+# TESTES & QUALIDADE DE CÓDIGO
+# ==============================================================================
+# Pytest
+.pytest_cache/
+.cache/
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+*.py,cover
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Ruff / Flake8
+.ruff_cache/
+
+# ==============================================================================
+# IDEs & EDITORES
+# ==============================================================================
+# VS Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# JetBrains (PyCharm)
+.idea/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# ==============================================================================
+# SISTEMA OPERACIONAL
+# ==============================================================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
