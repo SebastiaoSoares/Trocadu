@@ -1,5 +1,5 @@
-from src.auxiliares.mixins import JsonSerializavelMixin
-from src.dominio.jogador import Jogador
+from src.domain.shared.mixins import JsonSerializavelMixin
+from src.domain.entities.jogador import Jogador
 
 class Equipe(JsonSerializavelMixin):
     """

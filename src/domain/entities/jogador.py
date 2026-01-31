@@ -1,4 +1,4 @@
-from src.dominio.usuario import Usuario
+from src.domain.entities.usuario import Usuario
 
 class Jogador:
     """
