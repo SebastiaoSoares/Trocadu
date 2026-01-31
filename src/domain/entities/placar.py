@@ -1,6 +1,6 @@
 from typing import List, Dict
-from src.dominio.equipe import Equipe
-from src.dominio.jogador import Jogador # <--- Adicione esse import
+from src.domain.entities.equipe import Equipe
+from src.domain.entities.jogador import Jogador
 
 class Placar:
     """
