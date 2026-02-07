@@ -1,9 +1,11 @@
 from typing import Dict, Any, List
+from domain.registry.partida_registry import PartidaRegistry
 from src.domain.interfaces.partida_base import GerenciadorDePartida
 from src.domain.entities.jogador import Jogador
 from src.domain.entities.equipe import Equipe
 from src.domain.entities.turno import Turno
 
+@PartidaRegistry.registrar("TREINO_CLASSICA")
 class PartidaTreinoClassica(GerenciadorDePartida):
     """
     Modo Treino:

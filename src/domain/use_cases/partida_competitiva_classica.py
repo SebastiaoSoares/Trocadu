@@ -1,7 +1,9 @@
+from src.domain.registry.partida_registry import PartidaRegistry
 from src.domain.interfaces.partida_base import GerenciadorDePartida
 from src.domain.shared.mixins import PermutadorMixin
 from typing import Any, Dict
 
+@PartidaRegistry.registrar("COMPETITIVA_CLASSICA")
 class PartidaCompetitivaClassica(PermutadorMixin, GerenciadorDePartida):
     """
     Implementação oficial do jogo valendo pontos e ranking.
@@ -18,18 +20,18 @@ class PartidaCompetitivaClassica(PermutadorMixin, GerenciadorDePartida):
 
     def _setup(self):
         self._fila_de_duplas = self._gerar_permutacoes_duplas()
-        self._ranking = {jogador.nome: 0 for jogador in self._pool_jogadores}
+        self._ranking = {jogador.obter_nome(): 0 for jogador in self._pool_jogadores}
 
     def computar_pontos_rodada(self, pontos_conquistados: int):
         """
         Atribui a pontuação da rodada para ambos os jogadores da dupla atual.
         """
-
-        if not self._turno_atual or not self._turno_atual.equipe:
+        
+        if not self._turno_atual or not self._turno_atual.dupla:
             raise ValueError("Não há rodada ativa para pontuar.")
 
-        nome_j1 = self._turno_atual.equipe.jogador1.nome
-        nome_j2 = self._turno_atual.equipe.jogador2.nome
+        nome_j1 = self._turno_atual.dupla.jogador_1.obter_nome()
+        nome_j2 = self._turno_atual.dupla.jogador_2.obter_nome()
 
         if nome_j1 in self._ranking:
             self._ranking[nome_j1] += pontos_conquistados
@@ -65,8 +67,8 @@ class PartidaCompetitivaClassica(PermutadorMixin, GerenciadorDePartida):
         return {
             "status": "RODADA_NOVA",
             "dupla": {
-                "jogador1": dupla_atual.jogador1.nome,
-                "jogador2": dupla_atual.jogador2.nome
+                "jogador1": dupla_atual.jogador_1.obter_nome(),
+                "jogador2": dupla_atual.jogador_2.obter_nome()
             },
             "palavra": self._turno_atual.palavra_atual,
             "tempo_limite": self._turno_atual.tempo_limite
