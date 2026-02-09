@@ -1,5 +1,5 @@
 from uuid import UUID
-from src.shared.mixins import JsonSerializavelMixin
+from src.domain.shared.mixins import JsonSerializavelMixin
 
 class Usuario(JsonSerializavelMixin):
     """

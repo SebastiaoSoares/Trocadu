@@ -1,7 +1,7 @@
 """
 Mixins utilitários para serialização e funcionalidades compartilhadas.
 """
-
+from __future__ import annotations
 import json
 from typing import Any, Dict, Deque, List, TYPE_CHECKING
 from collections import deque
@@ -49,6 +49,9 @@ class PermutadorMixin:
         """
 
         from src.domain.entities.equipe import Equipe 
+
+        if not self._pool_jogadores:
+            return deque()
 
         jogadores = list(self._pool_jogadores)
         
