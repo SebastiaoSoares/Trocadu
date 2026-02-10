@@ -44,10 +44,10 @@ def banco_mock():
 @pytest.fixture
 def pool_jogadores():
     return [
-        Jogador(FakeUsuario("Aisha")),
-        Jogador(FakeUsuario("Ramom")),
-        Jogador(FakeUsuario("Sabrina")),
-        Jogador(FakeUsuario("Sebastião"))
+        Jogador("Aisha"),
+        Jogador("Ramom"),
+        Jogador("Sabrina"),
+        Jogador("Sebastião")
     ]
 
 
@@ -119,8 +119,8 @@ def test_treino_inicializacao(banco_mock):
     """
     jogo = PartidaTreinoClassica([], banco_mock)
 
-    assert jogo._jogador_usuario.obter_nome() == "Você"
-    assert jogo._jogador_sistema.obter_nome() == "Trocadu"
+    assert jogo._jogador_usuario.nome == "Você"
+    assert jogo._jogador_sistema.nome == "Trocadu"
 
 def test_treino_fluxo(banco_mock):
     """

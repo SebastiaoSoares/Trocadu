@@ -1,3 +1,4 @@
+from src.domain.entities.placar import Placar
 from src.domain.registry.partida_registry import PartidaRegistry
 from src.domain.interfaces.partida_base import GerenciadorDePartida
 from src.domain.shared.mixins import PermutadorMixin
@@ -20,7 +21,7 @@ class PartidaCompetitivaClassica(PermutadorMixin, GerenciadorDePartida):
 
     def _setup(self):
         self._fila_de_duplas = self._gerar_permutacoes_duplas()
-        self._ranking = {jogador.obter_nome(): 0 for jogador in self._pool_jogadores}
+        self._ranking = {jogador.nome: 0 for jogador in self._pool_jogadores}
 
     def computar_pontos_rodada(self, pontos_conquistados: int):
         """
@@ -30,8 +31,8 @@ class PartidaCompetitivaClassica(PermutadorMixin, GerenciadorDePartida):
         if not self._turno_atual or not self._turno_atual.dupla:
             raise ValueError("Não há rodada ativa para pontuar.")
 
-        nome_j1 = self._turno_atual.dupla.jogador_1.obter_nome()
-        nome_j2 = self._turno_atual.dupla.jogador_2.obter_nome()
+        nome_j1 = self._turno_atual.dupla.jogador_1.nome
+        nome_j2 = self._turno_atual.dupla.jogador_2.nome
 
         if nome_j1 in self._ranking:
             self._ranking[nome_j1] += pontos_conquistados
@@ -67,8 +68,8 @@ class PartidaCompetitivaClassica(PermutadorMixin, GerenciadorDePartida):
         return {
             "status": "RODADA_NOVA",
             "dupla": {
-                "jogador1": dupla_atual.jogador_1.obter_nome(),
-                "jogador2": dupla_atual.jogador_2.obter_nome()
+                "jogador1": dupla_atual.jogador_1.nome,
+                "jogador2": dupla_atual.jogador_2.nome
             },
             "palavra": self._turno_atual.palavra_atual,
             "tempo_limite": self._turno_atual.tempo_limite
@@ -81,19 +82,11 @@ class PartidaCompetitivaClassica(PermutadorMixin, GerenciadorDePartida):
 
         self._status = self.Status.FINALIZADO
 
-        ranking_ordenado = sorted(
-            self._ranking.items(), 
-            key=lambda item: item[1], 
-            reverse=True
-        )
-
-        podio_formatado = [
-            {"posicao": i, "nome": nome, "pontos": pontos}
-            for i, (nome, pontos) in enumerate(ranking_ordenado, start=1)
-        ]
+        ranking_formatado = Placar.processar_ranking(self._ranking)
+        campeao = Placar.obter_campeao(ranking_formatado)
 
         return {
             "mensagem": "Torneio encerrado!",
-            "campeao": podio_formatado[0] if podio_formatado else None,
-            "ranking_completo": podio_formatado
+            "campeao": campeao,
+            "ranking_completo": ranking_formatado
         }

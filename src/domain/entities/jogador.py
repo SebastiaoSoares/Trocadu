@@ -11,6 +11,3 @@ class Jogador:
 
     def incrementar_pontos(self, qtd: int):
         self.pontuacao_individual += qtd
-
-    def obter_nome(self) -> str:
-        return self.usuario_ref.nickname

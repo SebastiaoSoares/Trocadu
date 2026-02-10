@@ -19,7 +19,7 @@ class Equipe(JsonSerializavelMixin):
 
     def to_json(self) -> dict:
         return {
-            "jogador_1": self.jogador_1.obter_nome(),
-            "jogador_2": self.jogador_2.obter_nome(),
+            "jogador_1": self.jogador_1.nome,
+            "jogador_2": self.jogador_2.nome,
             "pontuacao": self.pontuacao_da_dupla
         }

@@ -18,12 +18,9 @@ class PartidaTreinoClassica(GerenciadorDePartida):
 
     def __init__(self, pool_jogadores: List[Jogador], pacote_palavras: object):
         super().__init__(pool_jogadores, pacote_palavras)
-
-        usuario_voce = Usuario(id_usuario=1, nickname="Você")       
-        usuario_sistema = Usuario(id_usuario=2, nickname="Trocadu")
         
-        self._jogador_usuario = Jogador(usuario_voce)
-        self._jogador_sistema = Jogador(usuario_sistema)
+        self._jogador_usuario = Jogador("Você")
+        self._jogador_sistema = Jogador("Trocadu")
         
         self._equipe_treino = Equipe(self._jogador_usuario, self._jogador_sistema)
         
@@ -60,8 +57,8 @@ class PartidaTreinoClassica(GerenciadorDePartida):
             "status": "RODADA_NOVA",
             "modo": "TREINO",
             "dupla": {
-                "jogador1": self._jogador_usuario.obter_nome(),
-                "jogador2": self._jogador_sistema.obter_nome()
+                "jogador1": self._jogador_usuario.nome,
+                "jogador2": self._jogador_sistema.nome
             },
             "palavra": self._turno_atual.palavra_atual,
             "tempo_limite": self._turno_atual.tempo_limite,

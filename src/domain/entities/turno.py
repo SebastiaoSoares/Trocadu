@@ -39,6 +39,6 @@ class Turno:
         self.guia_atual, self.adivinhador_atual = self.adivinhador_atual, self.guia_atual
         
         return {
-            "novo_guia": self.guia_atual.obter_nome(),
-            "novo_adivinhador": self.adivinhador_atual.obter_nome()
+            "novo_guia": self.guia_atual.nome,
+            "novo_adivinhador": self.adivinhador_atual.nome
         }

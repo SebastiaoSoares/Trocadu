@@ -16,35 +16,21 @@ git clone https://github.com/SebastiaoSoares/Trocadu.git
 ```mermaid
 classDiagram
     class PacoteDePalavras {
-        <<Abstract>>
-        +obter_palavras()* List~str~
+        <<Interface>>
+        +obter_palavras()* List~Palavra~
     }
     
     class PacoteArquivo {
         -caminho_arquivo: str
-        +obter_palavras() List~str~
+        +obter_palavras() List~Palavra~
     }
     
-    class PacotePersonalizado {
-        -lista_manual: List~str~
-        +obter_palavras() List~str~
-    }
-
     PacoteDePalavras <|-- PacoteArquivo
-    PacoteDePalavras <|-- PacotePersonalizado
-
-    class BancoDePalavras {
-        -estrategia: PacoteDePalavras
-        +definir_estrategia(pct: PacoteDePalavras)
-        +get_palavra_aleatoria() str
-    }
-
-    BancoDePalavras o-- PacoteDePalavras : "Usa (Strategy)"
 
     class JsonSerializavelMixin {
         <<Mixin>>
-        +to_json() dict
-        +from_json(data: dict)
+        +to_json() str
+        +to_dict() dict
     }
 
     class Usuario {
@@ -65,85 +51,81 @@ classDiagram
         -jogador_1: Jogador
         -jogador_2: Jogador
         -pontuacao_da_dupla: int
-        +registrar_pontos_rodada()
+        +registrar_pontos_rodada(pontos: int)
+    }
+
+    class Placar {
+        <<Service>>
+        +processar_ranking(dados: dict)$ List~dict~
+        +obter_campeao(lista: list)$ dict
+    }
+    
+    class Palavra {
+        -termo: str
+        -dica: str
+        -categoria: str
+        +termo() str
+        +dica() str
     }
 
     JsonSerializavelMixin <|-- Usuario
     JsonSerializavelMixin <|-- Equipe
+    JsonSerializavelMixin <|-- Palavra
 
-    Equipe o-- Jogador : "Agrupa Temporariamente"
-    Jogador --> Usuario : "Identifica"
+    Equipe o-- Jogador : "Agrupa"
+    Jogador --> Usuario : "Refere-se"
 
     class GerenciadorDePartida {
         <<Abstract>>
         #pool_jogadores: List~Jogador~
-        #dupla_atual: Equipe
         #turno_atual: Turno
-        #banco_palavras: BancoDePalavras
+        #pacote_palavras: PacoteDePalavras
         +iniciar_jogo() final
-        #gerar_permutacoes_duplas()
-        #executar_rodada_ida_e_volta()
         #setup()*
+        #avancar()*
         #processar_vitoria()*
     }
 
-    class PartidaCompetitiva {
+    class PartidaCompetitivaClassica {
         -ranking: dict
         #setup()
         #processar_vitoria()
     }
 
-    class PartidaTreino {
+    class PartidaTreinoClassica {
         #setup()
         #processar_vitoria()
     }
-
-    GerenciadorDePartida <|-- PartidaCompetitiva
-    GerenciadorDePartida <|-- PartidaTreino
     
+    class PartidaRegistry {
+        <<Singleton>>
+        +registrar(chave: str)
+        +obter_classe(chave: str) Type
+    }
+
+    GerenciadorDePartida <|-- PartidaCompetitivaClassica
+    GerenciadorDePartida <|-- PartidaTreinoClassica
+    
+    PartidaCompetitivaClassica ..> Placar : "Usa para ordenar"
     GerenciadorDePartida *-- Turno
-    GerenciadorDePartida --> BancoDePalavras
+    GerenciadorDePartida --> PacoteDePalavras : "Consome"
 
     class Turno {
         -dupla: Equipe
-        -guia_atual: Jogador
-        -adivinhador_atual: Jogador
-        -palavra: str
-        -tempo_restante: int
-        +iniciar_cronometro()
+        -palavra_atual: str
         +validar_chute(str) bool
-        +trocar_funcoes()
+        +trocar_funcoes() dict
     }
 
-    Turno --> Equipe : "Contexto da Rodada"
-    Turno --> Jogador : "Papéis Ativos"
-
-    class ConfiguracaoDePartida {
-        <<DTO>>
-        +tempo_limite: int
-        +modo_troca_duplas: bool
-    }
-
-    class NivelDificuldade {
-        <<Enum>>
-        FACIL
-        MEDIO
-        DIFICIL
-    }
-
+    Turno --> Equipe
+    
     class PartidaFactory {
         <<Factory>>
-        +criar_partida(tipo: str, config: Config) GerenciadorDePartida
+        +criar_partida(tipo: str, pool: List~Jogador~, banco: object) GerenciadorDePartida
     }
 
-    class HistoricoPartidas {
-        <<Container>>
-        -logs: List
-    }
-
-    ConfiguracaoDePartida --> NivelDificuldade
+    PartidaFactory ..> PartidaRegistry : "Consulta"
     PartidaFactory ..> GerenciadorDePartida : "Cria"
-    HistoricoPartidas ..> JsonSerializavelMixin
 ```
 
 
@@ -155,40 +137,44 @@ Trocadu/
 │   ├── domain/                             
 │   │   ├── __init__.py
 │   │   │
-│   │   ├── entities/                       # Entidades (SRP: Guardam estado e comportamento unitário)
+│   │   ├── entities/                       # Entidades (SRP)
 │   │   │   ├── __init__.py
 │   │   │   ├── jogador.py
 │   │   │   ├── equipe.py
-│   │   │   ├── placar.py
 │   │   │   ├── turno.py
+│   │   │   ├── placar.py
 │   │   │   └── palavra.py
 │   │   │
-│   │   ├── interfaces/                     # Abstrações (DIP: O núcleo depende disso, não de implementações)
+│   │   ├── interfaces/                     # Contratos (DIP)
 │   │   │   ├── __init__.py
-│   │   │   ├── partida_base.py             # Define o contrato do jogo
-│   │   │   └── repositorio_palavras.py     # Define o contrato de dados
+│   │   │   ├── partida_base.py             # Classe Abstrata (Template Method)
+│   │   │   └── repositorio_palavras.py     # Interface para fontes de dados
 │   │   │
-│   │   ├── use_cases/                      # Regras Específicas (OCP: Extensões do jogo)
+│   │   ├── use_cases/                      # Regras de Negócio
 │   │   │   ├── __init__.py
-│   │   │   ├── partida_competitiva.py
-│   │   │   └── partida_treino.py
+│   │   │   ├── partida_competitiva_classica.py
+│   │   │   └── partida_treino_classica.py
 │   │   │
-│   │   └── shared/                         # Utilitários e Mixins
+│   │   ├── registry/                       # Registro Dinâmico de Modos
+│   │   │   ├── __init__.py
+│   │   │   └── partida_registry.py         # Decorator para registrar jogos
+│   │   │
+│   │   └── shared/                         # Utilitários
 │   │       ├── __init__.py
-│   │       ├── mixins.py
-│   │       └── factories.py
+│   │       ├── mixins.py                   # Serialização e Permutação
+│   │       └── factories.py                # Factory Method
 │   │
 │   ├── infrastructure/
 │   │   ├── __init__.py
-│   │   ├── repositories/                   # Implementação concreta dos dados
+│   │   ├── repositories/                   # Arquivos/Banco
 │   │   │   └── pacote_arquivo.py
-│   │   └── api/                            # FastAPI
-│   │       └── routes.py
+│   │   └── api/                            
+│   │       └── routes.py                   # Endpoints da API
 │   │
 │   └── main.py
 │
-├── data/                                   # Arquivos JSON/SQLite
-├── tests/                                  # Testes Automatizados
+├── data/                                   # Arquivos JSON
+├── tests/                                  # Testes Automatizados (Pytest)
 ├── docs/                                   # Documentação
 └── requirements.txt
 ```
