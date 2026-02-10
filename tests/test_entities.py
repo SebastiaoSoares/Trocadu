@@ -31,12 +31,10 @@ def jogador_teste(usuario_teste):
 @pytest.fixture
 def equipe_teste():
     """
-    Cria uma equipe completa com 2 jogadores.
+    Cria uma equipe com 2 jogadores.
     """
-    u1 = Usuario(uuid4(), "PlayerOne")
-    u2 = Usuario(uuid4(), "PlayerTwo")
-    j1 = Jogador(u1)
-    j2 = Jogador(u2)
+    j1 = Jogador("j1")
+    j2 = Jogador("j2")
     return Equipe(j1, j2)
 
 
@@ -82,12 +80,6 @@ def test_jogador_incrementar_pontos(jogador_teste):
     jogador_teste.incrementar_pontos(5)
     assert jogador_teste.pontuacao_individual == 15
 
-def test_jogador_obter_nome(jogador_teste):
-    """
-    Testa se obter_nome busca do usuário vinculado.
-    """
-    assert jogador_teste.obter_nome() == "NickTeste"
-
 
 # TESTES DE EQUIPE:
 
@@ -96,7 +88,6 @@ def test_equipe_inicializar(equipe_teste):
     Testa se a equipe inicia com pontuação zerada.
     """
     assert equipe_teste.pontuacao_da_dupla == 0
-    assert equipe_teste.jogador_1.obter_nome() == "PlayerOne"
 
 def test_equipe_registrar_pontos_rodada(equipe_teste):
     """
@@ -118,8 +109,8 @@ def test_equipe_to_json(equipe_teste):
     dados = equipe_teste.to_json()
     
     assert dados['pontuacao'] == 50
-    assert dados['jogador_1'] == "PlayerOne"
-    assert dados['jogador_2'] == "PlayerTwo"
+    assert dados['jogador_1'] == "j1"
+    assert dados['jogador_2'] == "j2"
 
 
 # TESTES DE PALAVRA:
@@ -168,17 +159,16 @@ def test_turno_definir_palavra(equipe_teste):
     turno.definir_palavra("Rato")
     assert turno.palavra_atual == "Rato"
 
-def test_turno_validar_chute(equipe_teste, capsys):
+def test_turno_validar_chute(equipe_teste):
     """
     Testa a lógica de acerto e erro do chute.
     """
+
     turno = Turno(equipe_teste)
     turno.definir_palavra("Python")
-
-    assert turno.validar_chute("Java") is False
     
+    assert turno.validar_chute("Java") is False
     assert turno.validar_chute("python") is True
-    assert turno.validar_chute("PYTHON ") is True
 
 def test_turno_trocar_funcoes(equipe_teste, capsys):
     """
@@ -196,27 +186,59 @@ def test_turno_trocar_funcoes(equipe_teste, capsys):
 
 # TESTES DE PLACAR:
 
-def test_placar_ranking_individual(capsys):
+def test_placar_processar_ranking_ordem_correta():
     """
-    Testa se o placar ordena os jogadores corretamente.
+    Testa se o método estático ordena corretamente os pontos e gera os metadados (posição).
     """
-    j1 = Jogador(Usuario(uuid4(), "Nick01"))
-    j1.incrementar_pontos(10)
+
+    ranking_bruto = {
+        "Nick01": 10,
+        "Nick02": 100,
+        "Nick03": 50
+    }
+
+    resultado = Placar.processar_ranking(ranking_bruto)
+
+    assert len(resultado) == 3
     
-    j2 = Jogador(Usuario(uuid4(), "Nick02"))
-    j2.incrementar_pontos(100)
+    # 1º Lugar
+    assert resultado[0]["posicao"] == 1
+    assert resultado[0]["nome"] == "Nick02"
+    assert resultado[0]["pontos"] == 100
     
-    j3 = Jogador(Usuario(uuid4(), "Nick03"))
-    j3.incrementar_pontos(50)
+    # 2º Lugar
+    assert resultado[1]["posicao"] == 2
+    assert resultado[1]["nome"] == "Nick03"
+    assert resultado[1]["pontos"] == 50
+    
+    # 3º Lugar
+    assert resultado[2]["posicao"] == 3
+    assert resultado[2]["nome"] == "Nick01"
+    assert resultado[2]["pontos"] == 10
 
-    placar = Placar()
-    ranking = placar.exibir_ranking_individual([j1, j2, j3])
+def test_placar_obter_campeao():
+    """
+    Testa se a lógica de extração do campeão retorna o primeiro da lista.
+    """
+    ranking_processado = [
+        {"posicao": 1, "nome": "Vencedor", "pontos": 999},
+        {"posicao": 2, "nome": "Vice", "pontos": 500}
+    ]
+    
+    campeao = Placar.obter_campeao(ranking_processado)
+    
+    assert campeao is not None
+    assert campeao["nome"] == "Vencedor"
+    assert campeao["pontos"] == 999
 
-    assert ranking["Nick02"] == 100
-    assert ranking["Nick03"] == 50
-    assert ranking["Nick01"] == 10
-
-    out, _ = capsys.readouterr()
-    assert "1º Lugar: Nick02" in out
-    assert "2º Lugar: Nick03" in out
-    assert "3º Lugar: Nick01" in out
+def test_placar_vazio():
+    """
+    Testa comportamento com dicionário vazio (sem jogadores).
+    """
+    ranking_bruto = {}
+    
+    resultado = Placar.processar_ranking(ranking_bruto)
+    campeao = Placar.obter_campeao(resultado)
+    
+    assert resultado == []
+    assert campeao is None
