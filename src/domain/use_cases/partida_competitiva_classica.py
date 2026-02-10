@@ -13,8 +13,8 @@ class PartidaCompetitivaClassica(PermutadorMixin, GerenciadorDePartida):
     - Ranking final exibido ao término.
     """
 
-    def __init__(self, pool_jogadores: list, banco_palavras: object):
-        super().__init__(pool_jogadores, banco_palavras)
+    def __init__(self, pool_jogadores: list, pacote_palavras: object):
+        super().__init__(pool_jogadores, pacote_palavras)
         self._ranking: Dict[str, int] = {}
         self._dupla_atual = None
 

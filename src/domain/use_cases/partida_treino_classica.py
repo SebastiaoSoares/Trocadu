@@ -1,7 +1,8 @@
 from typing import Dict, Any, List
-from domain.registry.partida_registry import PartidaRegistry
+from src.domain.registry.partida_registry import PartidaRegistry
 from src.domain.interfaces.partida_base import GerenciadorDePartida
 from src.domain.entities.jogador import Jogador
+from src.domain.entities.usuario import Usuario
 from src.domain.entities.equipe import Equipe
 from src.domain.entities.turno import Turno
 
@@ -15,11 +16,14 @@ class PartidaTreinoClassica(GerenciadorDePartida):
     - Termina apenas quando solicitado explicitamente.
     """
 
-    def __init__(self, pool_jogadores: List[Jogador], banco_palavras: object):
-        super().__init__(pool_jogadores, banco_palavras)
+    def __init__(self, pool_jogadores: List[Jogador], pacote_palavras: object):
+        super().__init__(pool_jogadores, pacote_palavras)
+
+        usuario_voce = Usuario(id_usuario=1, nickname="Você")       
+        usuario_sistema = Usuario(id_usuario=2, nickname="Trocadu")
         
-        self._jogador_usuario = Jogador(nome="Você")
-        self._jogador_sistema = Jogador(nome="Trocadu")
+        self._jogador_usuario = Jogador(usuario_voce)
+        self._jogador_sistema = Jogador(usuario_sistema)
         
         self._equipe_treino = Equipe(self._jogador_usuario, self._jogador_sistema)
         
@@ -46,7 +50,7 @@ class PartidaTreinoClassica(GerenciadorDePartida):
 
         self._turno_atual = Turno(self._equipe_treino, tempo_limite=90)
         
-        palavra = self._banco_palavras.get_palavra_aleatoria()
+        palavra = self._pacote_palavras.get_palavra_aleatoria()
         self._turno_atual.definir_palavra(palavra)
         self._turno_atual.iniciar_cronometro()
 
@@ -56,8 +60,8 @@ class PartidaTreinoClassica(GerenciadorDePartida):
             "status": "RODADA_NOVA",
             "modo": "TREINO",
             "dupla": {
-                "jogador1": self._jogador_usuario.nome,
-                "jogador2": self._jogador_sistema.nome
+                "jogador1": self._jogador_usuario.obter_nome(),
+                "jogador2": self._jogador_sistema.obter_nome()
             },
             "palavra": self._turno_atual.palavra_atual,
             "tempo_limite": self._turno_atual.tempo_limite,
