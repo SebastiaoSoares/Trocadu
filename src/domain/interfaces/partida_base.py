@@ -4,7 +4,7 @@ from typing import Any, Dict, List, Optional
 from collections import deque
 from src.domain.entities.jogador import Jogador
 from src.domain.entities.turno import Turno
-from src.domain.interfaces.repositorio_palavras import BancoDePalavras
+from src.domain.interfaces.repositorio_palavras import PacoteDePalavras
 
 class GerenciadorDePartida(ABC):
     """
@@ -16,9 +16,9 @@ class GerenciadorDePartida(ABC):
         EM_ANDAMENTO = "Em Andamento"
         FINALIZADO = "Finalizado"
 
-    def __init__(self, pool_jogadores: List[Jogador], banco_palavras: BancoDePalavras):
+    def __init__(self, pool_jogadores: List[Jogador], pacote_palavras: PacoteDePalavras):
         self._pool_jogadores: List[Jogador] = pool_jogadores
-        self._banco_palavras: BancoDePalavras = banco_palavras
+        self._pacote_palavras: PacoteDePalavras = pacote_palavras
         self._turno_atual: Optional[Turno] = None
         self._status: GerenciadorDePartida.Status = self.Status.NAO_INICIADO
 

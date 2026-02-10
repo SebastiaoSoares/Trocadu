@@ -1,7 +1,7 @@
 """
 Mixins utilitários para serialização e funcionalidades compartilhadas.
 """
-
+from __future__ import annotations
 import json
 from typing import Any, Dict, Deque, List, TYPE_CHECKING
 from collections import deque
@@ -40,7 +40,7 @@ class PermutadorMixin:
     """
 
     _pool_jogadores: List[Any] 
-    _banco_palavras: Any
+    _pacote_palavras: Any
     _turno_atual: Any
 
     def _gerar_permutacoes_duplas(self) -> Deque[Equipe]:
@@ -49,6 +49,9 @@ class PermutadorMixin:
         """
 
         from src.domain.entities.equipe import Equipe 
+
+        if not self._pool_jogadores:
+            return deque()
 
         jogadores = list(self._pool_jogadores)
         
@@ -84,6 +87,6 @@ class PermutadorMixin:
 
         self._turno_atual = Turno(dupla, tempo_limite=60)
         
-        palavra_ida = self._banco_palavras.get_palavra_aleatoria()
+        palavra_ida = self._pacote_palavras.get_palavra_aleatoria()
         self._turno_atual.definir_palavra(palavra_ida)
         self._turno_atual.iniciar_cronometro()

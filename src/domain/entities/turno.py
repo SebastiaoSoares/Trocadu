@@ -8,7 +8,7 @@ class Turno:
     """
     def __init__(self, dupla: Equipe, tempo_limite: int = 60):
         self.dupla = dupla
-        self.tempo_restante = tempo_limite
+        self.tempo_limite = tempo_limite
         self.palavra_atual = ""
         
         self.guia_atual: Jogador = dupla.jogador_1
@@ -24,7 +24,7 @@ class Turno:
         """
         Inicia a contagem do cronômetro.
         """
-        print(f"=== TURNO INICIADO: {self.tempo_restante} segundos ===")
+        print(f"=== TURNO INICIADO: {self.tempo_limite} segundos ===")
         print(f"Guia: {self.guia_atual.obter_nome()} | Adivinhador: {self.adivinhador_atual.obter_nome()}")
 
     def validar_chute(self, chute: str) -> bool:
