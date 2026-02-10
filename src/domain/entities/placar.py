@@ -1,32 +1,27 @@
-from typing import List, Dict
-from src.domain.entities.equipe import Equipe
-from src.domain.entities.jogador import Jogador
+from typing import List, Dict, Any
 
 class Placar:
     """
-    Responsável por exibir o ranking.
+    Responsável exclusivamente por processar e formatar rankings.
     """
     
-    def exibir_ranking_duplas(self, equipes: List[Equipe]) -> Dict[str, int]:
-        print("\n=== MELHORES DUPLAS ===")
-        ranking = {}
-        equipes_ordenadas = sorted(equipes, key=lambda e: e.pontuacao_da_dupla, reverse=True)
-        
-        for i, eq in enumerate(equipes_ordenadas, 1):
-            nome_dupla = f"{eq.jogador_1.obter_nome()} & {eq.jogador_2.obter_nome()}"
-            pontos = eq.pontuacao_da_dupla
-            ranking[nome_dupla] = pontos
-            print(f"{i}º Lugar: {nome_dupla} - {pontos} pts")
-        return ranking
+    @staticmethod
+    def processar_ranking(ranking_bruto: Dict[str, int]) -> List[Dict[str, Any]]:
+        """
+        Recebe {'Nome': pontos} e retorna lista ordenada para JSON.
+        """
 
-    def exibir_ranking_individual(self, jogadores: List[Jogador]) -> Dict[str, int]:
-        print("\n=== CLASSIFICAÇÃO GERAL (INDIVIDUAL) ===")
-        ranking = {}
-        jogadores_ordenados = sorted(jogadores, key=lambda j: j.pontuacao_individual, reverse=True)
+        ranking_ordenado = sorted(
+            ranking_bruto.items(), 
+            key=lambda item: item[1], 
+            reverse=True
+        )
         
-        for i, jog in enumerate(jogadores_ordenados, 1):
-            nome = jog.obter_nome()
-            pontos = jog.pontuacao_individual
-            ranking[nome] = pontos
-            print(f"{i}º Lugar: {nome} - {pontos} pts")
-        return ranking
+        return [
+            {"posicao": i, "nome": nome, "pontos": pontos}
+            for i, (nome, pontos) in enumerate(ranking_ordenado, start=1)
+        ]
+
+    @staticmethod
+    def obter_campeao(ranking_processado: List[Dict[str, Any]]) -> Dict[str, Any]:
+        return ranking_processado[0] if ranking_processado else None

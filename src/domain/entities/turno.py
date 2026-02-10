@@ -1,10 +1,10 @@
+from typing import Dict
 from src.domain.entities.equipe import Equipe
 from src.domain.entities.jogador import Jogador
 
 class Turno:
     """
     Controla o ciclo micro do jogo: cronômetro, palavra ativa e validação de pulos.
-    Ref: Diagrama de Classes [Turno]
     """
     def __init__(self, dupla: Equipe, tempo_limite: int = 60):
         self.dupla = dupla
@@ -21,35 +21,24 @@ class Turno:
         self.palavra_atual = palavra
 
     def iniciar_cronometro(self):
-        """
-        Inicia a contagem do cronômetro.
-        """
-        print(f"=== TURNO INICIADO: {self.tempo_limite} segundos ===")
-        print(f"Guia: {self.guia_atual.obter_nome()} | Adivinhador: {self.adivinhador_atual.obter_nome()}")
+        pass
 
     def validar_chute(self, chute: str) -> bool:
         """
-        Verifica se o chute corresponde à palavra atual (ignorando maiúsculas).
+        Retorna True/False. Não imprime nada.
         """
         if not chute or not self.palavra_atual:
             return False
             
-        acertou = chute.strip().lower() == self.palavra_atual.strip().lower()
-        
-        if acertou:
-            print(f"ACERTOU! A palavra era '{self.palavra_atual}'")
-        else:
-            print(f"Errou: '{chute}' não é '{self.palavra_atual}'")
-            
-        return acertou
+        return chute.strip().lower() == self.palavra_atual.strip().lower()
 
-    def trocar_funcoes(self):
+    def trocar_funcoes(self) -> Dict[str, str]:
         """
-        Inverte os papéis: quem era Guia vira Adivinhador e vice-versa.
-        Importante para a regra de 'Ida e Volta'.
+        Inverte papéis e retorna os novos papéis para log/feedback.
         """
-        temp = self.guia_atual
-        self.guia_atual = self.adivinhador_atual
-        self.adivinhador_atual = temp
+        self.guia_atual, self.adivinhador_atual = self.adivinhador_atual, self.guia_atual
         
-        print(f"Troca de papéis! Novo Guia: {self.guia_atual.obter_nome()}")
+        return {
+            "novo_guia": self.guia_atual.obter_nome(),
+            "novo_adivinhador": self.adivinhador_atual.obter_nome()
+        }
