@@ -24,13 +24,25 @@ classDiagram
         -caminho_arquivo: str
         +obter_palavras() List~Palavra~
     }
+
+    class PacotePersonalizado {
+        -id_usuario: uuid
+        +obter_palavras() List~Palavra~
+    }
     
     PacoteDePalavras <|-- PacoteArquivo
+    PacoteDePalavras <|-- PacotePersonalizado
 
     class JsonSerializavelMixin {
         <<Mixin>>
         +to_json() str
         +to_dict() dict
+    }
+
+    class PermutadorMixin {
+        <<Mixin>>
+        #gerar_permutacoes_duplas() Deque~Equipe~
+        #executar_rodada_ida_e_volta(dupla: Equipe)
     }
 
     class Usuario {
@@ -88,12 +100,19 @@ classDiagram
 
     class PartidaCompetitivaClassica {
         -ranking: dict
+        -fila_de_duplas: deque
         #setup()
+        +avancar()
+        +computar_pontos_rodada(pontos: int)
         #processar_vitoria()
     }
 
     class PartidaTreinoClassica {
+        -jogador_usuario: Jogador
+        -jogador_sistema: Jogador
         #setup()
+        +avancar()
+        +encerrar_manualmente()
         #processar_vitoria()
     }
     
@@ -106,6 +125,8 @@ classDiagram
     GerenciadorDePartida <|-- PartidaCompetitivaClassica
     GerenciadorDePartida <|-- PartidaTreinoClassica
     
+    PermutadorMixin <|-- PartidaCompetitivaClassica : "Herança Múltipla"
+
     PartidaCompetitivaClassica ..> Placar : "Usa para ordenar"
     GerenciadorDePartida *-- Turno
     GerenciadorDePartida --> PacoteDePalavras : "Consome"
@@ -113,7 +134,12 @@ classDiagram
     class Turno {
         -dupla: Equipe
         -palavra_atual: str
+        -tempo_limite: int
+        -saltos_disponiveis: int
+        +definir_palavra(str)
+        +iniciar_cronometro()
         +validar_chute(str) bool
+        +pular_palavra() bool
         +trocar_funcoes() dict
     }
 
