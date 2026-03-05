@@ -1,3 +1,4 @@
+import random
 from typing import Dict, Any, List, Optional
 from src.domain.registry.partida_registry import PartidaRegistry
 from src.domain.interfaces.partida_base import GerenciadorDePartida
@@ -33,8 +34,10 @@ class PartidaTreinoClassica(GerenciadorDePartida):
             saltos_disponiveis=self._configuracao.limite_saltos
         )
         
-        palavra = self._pacote_palavras.get_palavra_aleatoria()
-        self._turno_atual.definir_palavra(palavra)
+        palavras_disponiveis = self._pacote_palavras.obter_palavras()
+        palavra_sorteada = random.choice(palavras_disponiveis)
+        
+        self._turno_atual.definir_palavra(palavra_sorteada.termo)
         self._turno_atual.iniciar_cronometro()
 
         self._rodadas_jogadas += 1

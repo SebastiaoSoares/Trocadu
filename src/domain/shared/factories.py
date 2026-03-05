@@ -1,8 +1,10 @@
-from typing import List
+from typing import List, Optional
 from src.domain.interfaces.partida_base import GerenciadorDePartida
 from src.domain.registry.partida_registry import PartidaRegistry
 from src.domain.entities.jogador import Jogador
 from src.domain.entities.configuracao import ConfiguracaoDePartida
+
+import src.domain.use_cases
 
 class PartidaFactory:
     @staticmethod

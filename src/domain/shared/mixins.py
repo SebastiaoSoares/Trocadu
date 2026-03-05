@@ -3,6 +3,7 @@ Mixins utilitários para serialização e funcionalidades compartilhadas.
 """
 from __future__ import annotations
 import json
+import random
 from typing import Any, Dict, Deque, List, TYPE_CHECKING
 from collections import deque
 
@@ -68,6 +69,8 @@ class PermutadorMixin:
             saltos_disponiveis=self._configuracao.limite_saltos
         )
         
-        palavra_ida = self._pacote_palavras.get_palavra_aleatoria()
-        self._turno_atual.definir_palavra(palavra_ida)
+        palavras_disponiveis = self._pacote_palavras.obter_palavras()
+        palavra_sorteada = random.choice(palavras_disponiveis)
+        
+        self._turno_atual.definir_palavra(palavra_sorteada.termo)
         self._turno_atual.iniciar_cronometro()

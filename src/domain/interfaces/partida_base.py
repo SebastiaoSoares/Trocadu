@@ -53,7 +53,7 @@ class GerenciadorDePartida(ABC):
         pass
 
     @abstractmethod
-    def contabilizar(self) -> Dict[str, Any]:
+    def avancar(self) -> Dict[str, Any]:
         """
         Executa um único passo (rodada) ou finaliza o jogo.
         """
