@@ -5,6 +5,7 @@ from collections import deque
 from src.domain.entities.jogador import Jogador
 from src.domain.entities.turno import Turno
 from src.domain.interfaces.repositorio_palavras import PacoteDePalavras
+from src.domain.entities.configuracao import ConfiguracaoDePartida
 
 class GerenciadorDePartida(ABC):
     """
@@ -16,16 +17,23 @@ class GerenciadorDePartida(ABC):
         EM_ANDAMENTO = "Em Andamento"
         FINALIZADO = "Finalizado"
 
-    def __init__(self, pool_jogadores: List[Jogador], pacote_palavras: PacoteDePalavras):
+    def __init__(
+        self, 
+        pool_jogadores: List[Jogador], 
+        pacote_palavras: PacoteDePalavras,
+        configuracao: Optional[ConfiguracaoDePartida] = None
+    ):
         self._pool_jogadores: List[Jogador] = pool_jogadores
         self._pacote_palavras: PacoteDePalavras = pacote_palavras
+        
+        self._configuracao: ConfiguracaoDePartida = configuracao or ConfiguracaoDePartida()
+        
         self._turno_atual: Optional[Turno] = None
         self._status: GerenciadorDePartida.Status = self.Status.NAO_INICIADO
 
     def iniciar_jogo(self) -> Dict[str, Any]:
         """
-        Inicia o jogo e prepara a partida (setup), mas deixa a responsabilidade
-        de gerenciar o avanço do jogo com a classe filha.
+        Inicia o jogo e prepara a partida (setup).
         """
         try:
             self._setup()
@@ -45,7 +53,7 @@ class GerenciadorDePartida(ABC):
         pass
 
     @abstractmethod
-    def avancar(self) -> Dict[str, Any]:
+    def contabilizar(self) -> Dict[str, Any]:
         """
         Executa um único passo (rodada) ou finaliza o jogo.
         """
