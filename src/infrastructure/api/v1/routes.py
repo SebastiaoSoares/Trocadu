@@ -1,20 +1,15 @@
 import os
 from fastapi import APIRouter
-from src.domain.shared.factories import PartidaFactory
-from src.infrastructure.repositories.pacote_arquivo import PacoteArquivo
+
+from src.infrastructure.api.v1.endpoints.game_routes import router as game
+from src.infrastructure.api.v1.endpoints.partida_routes import router as partida
 
 router = APIRouter()
 
-@router.get("/")
+@router.get("/", tags=["Geral"])
 def health_check():
-    return {"status": f"Trocadu API online! Ambiente: {os.getenv('ENV')}"}
+    """Verifica a integridade e o ambiente da API."""
+    return {"status": f"Trocadu API online! Ambiente: {os.getenv('ENV', 'desenvolvimento')}"}
 
-@router.post("/partida")
-def criar_partida(tipo: str):
-    caminho_json = os.path.join(os.getcwd(), "src", "data", "palavras.json")
-    
-    banco_de_palavras = PacoteArquivo(caminho_arquivo=caminho_json)
-    
-    partida = PartidaFactory.criar_partida(tipo, [], banco_de_palavras)
-    
-    return {"mensagem": "Partida criada usando palavras.json", "tipo": tipo}
+router.include_router(game, prefix="/game")
+router.include_router(partida, prefix="/partida")

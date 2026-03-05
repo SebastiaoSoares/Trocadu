@@ -1,11 +1,19 @@
-from typing import List
+from typing import List, Optional
 from src.domain.interfaces.partida_base import GerenciadorDePartida
 from src.domain.registry.partida_registry import PartidaRegistry
 from src.domain.entities.jogador import Jogador
+from src.domain.entities.configuracao import ConfiguracaoDePartida
+
+import src.domain.use_cases
 
 class PartidaFactory:
     @staticmethod
-    def criar_partida(tipo: str, pool_jogadores: List[Jogador], banco_palavras: object) -> GerenciadorDePartida:
+    def criar_partida(
+        tipo: str, 
+        pool_jogadores: List[Jogador], 
+        banco_palavras: object,
+        configuracao: Optional[ConfiguracaoDePartida] = None
+    ) -> GerenciadorDePartida:
         
         classe_concreta = PartidaRegistry.obter_classe(tipo)
 
@@ -13,4 +21,4 @@ class PartidaFactory:
              modos = PartidaRegistry.listar_modos()
              raise ValueError(f"Modo '{tipo}' inválido. Disponíveis: {modos}")
 
-        return classe_concreta(pool_jogadores, banco_palavras)
+        return classe_concreta(pool_jogadores, banco_palavras, configuracao)
