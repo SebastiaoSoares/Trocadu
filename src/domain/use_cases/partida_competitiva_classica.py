@@ -4,6 +4,8 @@ from src.domain.interfaces.partida_base import GerenciadorDePartida
 from src.domain.shared.mixins import PermutadorMixin
 from src.domain.entities.configuracao import ConfiguracaoDePartida
 from typing import Any, Dict, Optional
+from src.infrastructure.database.database import SessionLocal
+from src.infrastructure.repositories.partida_repository import PartidaRepository
 
 @PartidaRegistry.registrar("COMPETITIVA_CLASSICA")
 class PartidaCompetitivaClassica(PermutadorMixin, GerenciadorDePartida):
@@ -75,6 +77,13 @@ class PartidaCompetitivaClassica(PermutadorMixin, GerenciadorDePartida):
         self._status = self.Status.FINALIZADO
         ranking_formatado = Placar.processar_ranking(self._ranking)
         campeao = Placar.obter_campeao(ranking_formatado)
+
+        db = SessionLocal()
+        try:
+            repo = PartidaRepository(db)
+            repo.salvar_historico("COMPETITIVA_CLASSICA", ranking_formatado)
+        finally:
+            db.close()
 
         return {
             "mensagem": "Torneio encerrado!",

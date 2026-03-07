@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from src.infrastructure.api.v1.routes import router
+from src.infrastructure.database.database import criar_tabelas
 
 description = """
 API do Trocadu, jogo de palavras do gênero Party Game. Esta API é responsável por gerenciar partidas,
@@ -16,6 +17,8 @@ Veja também o perfil dos desenvolvedores: [Sebastião Soares](https://github.co
 def create_app() -> FastAPI:
 
     load_dotenv()
+    
+    criar_tabelas()
 
     env = os.getenv("ENVIRONMENT", "production").lower()
     
