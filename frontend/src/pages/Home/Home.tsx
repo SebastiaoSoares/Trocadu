@@ -1,14 +1,13 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 
-import { Background } from '../components/';
+import { Background } from '../../components';
 
 import styles from "./Home.module.css"
-import logo from '../assets/images/trocadu.png';
+import logo from '../../assets/images/trocadu.png';
 
 const Home: React.FC = () => {
   return (
     <IonPage>
-      <Background />
       <IonHeader>
         <IonToolbar className={styles.toolbar}>
           <IonTitle>
@@ -17,6 +16,7 @@ const Home: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
+        <Background />
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonTitle size="large">Trocadu</IonTitle>
