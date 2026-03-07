@@ -2,9 +2,9 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('../../assets/images/background.jpeg');
+  width: 100dvw;
+  height: 100dvh;
+  background-image: url('../../assets/images/trocadu_background.01.png');
   background-size: cover;
   background-position: center;
   z-index: -1;
