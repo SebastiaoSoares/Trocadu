@@ -122,3 +122,26 @@ credentials.json
 
 pip-log.txt
 pip-delete-this-directory.txt
+
+# ==============================================================================
+# FRONTEND (NODE.JS, REACT, IONIC, VITE)
+# ==============================================================================
+
+node_modules/
+
+dist/
+build/
+www/
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+.ionic/
+.eslintcache
+.vite/
+
+.env.development.local
+.env.test.local
+.env.production.local
