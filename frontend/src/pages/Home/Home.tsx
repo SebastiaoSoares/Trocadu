@@ -10,16 +10,16 @@ const Home: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar className={styles.toolbar}>
-          <IonTitle>
-            <img src={logo} alt="Trocadu Icon" height="50" />
-          </IonTitle>
+          
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
         <Background />
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">Trocadu</IonTitle>
+            <IonTitle size="large">
+              <img src={logo} alt="Trocadu Icon" height="50" />
+            </IonTitle>
           </IonToolbar>
         </IonHeader>
       </IonContent>

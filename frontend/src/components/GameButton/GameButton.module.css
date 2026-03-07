@@ -1,0 +1,7 @@
+.gameButton {
+    background-color: var(--button-color);
+    max-width: 90vw;
+    padding: 10px;
+    border-radius: 20px;
+    box-shadow: 0 0 10px -5px;
+}
