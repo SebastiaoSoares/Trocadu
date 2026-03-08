@@ -1,13 +1,27 @@
 import React from 'react';
 import { IonButton } from '@ionic/react';
+import styles from './GameButton.module.css';
 
-import styles from "./GameButton.module.css";
+type GameButtonProps = React.ComponentProps<typeof IonButton> & {
+  variant?: 'primary' | 'secondary' | 'accent';
+};
 
-function Example() {
+const GameButton: React.FC<GameButtonProps> = ({ 
+  children, 
+  className, 
+  variant = 'primary',
+  ...rest 
+}) => {
   return (
-    <>
-      <IonButton className={styles.gameButton}>Default</IonButton>
-    </>
+    <IonButton
+      className={`${styles.gameButton} ${styles[variant]} ${className || ''}`}
+      expand="block"
+      shape="round"
+      {...rest}
+    >
+      {children}
+    </IonButton>
   );
-}
-export default Example;
+};
+
+export default GameButton;

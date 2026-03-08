@@ -1,6 +1,104 @@
-/* For information on how to create your own theme, please refer to:
-http://ionicframework.com/docs/theming/ */
+:root {
+    /* BASE PALETTE (Absolute colors) */
+
+    /* Red (Base: #F04444) */
+    --red-50:  #fcecec;
+    --red-100: #f8c7c7;
+    --red-300: #f48e8e;
+    --red-500: #F04444; /* Original */
+    --red-700: #b43333;
+    --red-900: #782222;
+
+    /* Yellow (Base: #E6B00C) */
+    --yellow-50:  #fdf8e6;
+    --yellow-100: #f8e7b3;
+    --yellow-300: #f0cf66;
+    --yellow-500: #E6B00C; /* Original */
+    --yellow-700: #ad8409;
+    --yellow-900: #735806;
+
+    /* Mustard (Base: #C09000) */
+    --mustard-50:  #f9f4e5;
+    --mustard-100: #ebe0b3;
+    --mustard-300: #d6be66;
+    --mustard-500: #C09000; /* Original */
+    --mustard-700: #906c00;
+    --mustard-900: #604800;
+
+    /* Grayscale (Essential for backgrounds, texts, and borders) */
+    --gray-50:  #f4f5f8;
+    --gray-200: #e0e0e0;
+    --gray-400: #bdbdbd;
+    --gray-600: #757575;
+    --gray-800: #424242;
+    --gray-900: #222428;
+
+    /* Standard Support Colors */
+    --green-500: #2dd36f;
+    --green-700: #21a053;
+
+
+    /* SEMANTIC / FUNCTIONAL COLORS  */
+
+    /* Main Game Colors */
+    --color-primary: var(--red-500);
+    --color-primary-hover: var(--red-700);
+
+    --color-secondary: var(--yellow-500);
+    --color-secondary-hover: var(--yellow-700);
+
+    --color-accent: var(--red-500);
+    --color-accent-hover: var(--red-700);
+
+    /* Feedback (Game Status) */
+    --status-success: var(--green-500);         
+    --status-success-bg: #eafbf0;               
+
+    --status-warning: var(--yellow-500);        
+    --status-warning-bg: var(--yellow-50);      
+
+    --status-error: var(--red-500);             
+    --status-error-bg: var(--red-50);       
+
+    /* Surfaces and Texts */
+    --bg-default: var(--gray-50);               
+    --bg-surface: #ffffff;                       
+
+    --text-primary: var(--gray-900);        
+    --text-secondary: var(--gray-600);       
+    --text-inverse: #ffffff;                 
+
+    --border-default: var(--gray-200);
+
+    /* Shadows */
+    --shadow: 0 0 10px -5px black;
+    --shadow-hover: 0 0 15px -3px black;
+    --shine: 0 0 20px -5px white;
+}
+
+
+/* Adaptation for Ionic Native Components */
 
 :root {
-    --button-color: #F04444;
+  --ion-color-primary: var(--color-primary);
+  --ion-color-primary-shade: var(--color-primary-hover);
+  
+  --ion-color-secondary: var(--color-secondary);
+  --ion-color-secondary-shade: var(--color-secondary-hover);
+  
+  --ion-color-danger: var(--status-error);
+  --ion-color-danger-shade: var(--red-700);
+  
+  --ion-color-warning: var(--status-warning);
+  --ion-color-warning-shade: var(--yellow-700);
+  
+  --ion-color-success: var(--status-success);
+  --ion-color-success-shade: var(--green-700);
+}
+
+
+* {
+  font-family: "Jersey 10", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }

@@ -1,23 +1,32 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { useEffect } from 'react';
+import { useIonRouter } from '@ionic/react';
 
-import { Background } from '../../components';
+import { GameContent, GamePage } from '../../components';
 
-import logo from '../assets/images/trocadu.png';
+import styles from "./LoadingPage.module.css";
+import logo from '../../assets/images/trocadu.png';
 
 const LoadingPage: React.FC = () => {
+  const router = useIonRouter();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      
+      router.push('/home', 'back', 'push');
+      
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [router]);
+
   return (
-    <IonPage>
-      <IonContent fullscreen>
-        <Background />
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">
-                <img src={logo} alt="Trocadu Icon" height="50" />
-            </IonTitle>
-          </IonToolbar>
-        </IonHeader>
-      </IonContent>
-    </IonPage>
+    <GamePage>
+      <GameContent fullscreen>
+        <div className={styles.menuContainer}>
+          <img src={logo} alt="Trocadu Icon" className={styles.logo} />
+        </div>
+      </GameContent>
+    </GamePage>
   );
 };
 

@@ -4,7 +4,7 @@
   left: 0;
   width: 100dvw;
   height: 100dvh;
-  background-image: url('../../assets/images/trocadu_background.01.png');
+  background-image: linear-gradient(rgba(44, 5, 80, 0.7), rgba(0, 0, 0, 0.3)), url('../../assets/images/trocadu_background.png');
   background-size: cover;
   background-position: center;
   z-index: -1;

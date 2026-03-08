@@ -1,0 +1,15 @@
+.gamePage {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    width: 100dvw;
+    overflow: hidden;
+    align-items: stretch;
+    padding: 0 5vw;
+}
+
+@media screen and (min-width: 800px) {
+    .gamePage {
+        padding: 0 20vw;
+    }
+}

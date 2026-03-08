@@ -1,29 +1,33 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-
-import { Background } from '../../components';
-
-import styles from "./Home.module.css"
+import { GamePage, GameHeader, GameContent, GameButton } from '../../components'; // Adicionei o GameButton
+import styles from "./Home.module.css";
 import logo from '../../assets/images/trocadu.png';
 
 const Home: React.FC = () => {
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar className={styles.toolbar}>
+    <GamePage className={styles.homePage}>
+      <GameHeader>
+        
+      </GameHeader>
+      
+      <GameContent fullscreen>
+        <div className={styles.menuContainer}>
+          <img src={logo} alt="Trocadu Icon" className={styles.logo} />
           
-        </IonToolbar>
-      </IonHeader>
-      <IonContent fullscreen>
-        <Background />
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">
-              <img src={logo} alt="Trocadu Icon" height="50" />
-            </IonTitle>
-          </IonToolbar>
-        </IonHeader>
-      </IonContent>
-    </IonPage>
+          <div>
+            <GameButton routerLink="/select-mode" variant="primary">
+              Jogar
+            </GameButton>
+            <GameButton routerLink="/my-account" variant="primary">
+              Minha Conta
+            </GameButton>
+            <GameButton routerLink="/word-packs" variant="primary">
+              Pacotes de Palavas
+            </GameButton>
+          </div>
+          
+        </div>
+      </GameContent>
+    </GamePage>
   );
 };
 
