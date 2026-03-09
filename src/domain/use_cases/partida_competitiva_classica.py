@@ -70,7 +70,7 @@ class PartidaCompetitivaClassica(PermutadorMixin, GerenciadorDePartida):
             },
             "palavra": self._turno_atual.palavra_atual,
             "tempo_limite": self._turno_atual.tempo_limite,
-            "saltos_disponiveis": self._turno_atual.saltos_disponiveis
+            "palavras_disponiveis": self._turno_atual.palavras_disponiveis
         }
 
     def _processar_vitoria(self):

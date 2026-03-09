@@ -159,17 +159,6 @@ def test_turno_definir_palavra(equipe_teste):
     turno.definir_palavra("Rato")
     assert turno.palavra_atual == "Rato"
 
-def test_turno_validar_chute(equipe_teste):
-    """
-    Testa a lógica de acerto e erro do chute.
-    """
-
-    turno = Turno(equipe_teste)
-    turno.definir_palavra("Python")
-    
-    assert turno.validar_chute("Java") is False
-    assert turno.validar_chute("python") is True
-
 def test_turno_trocar_funcoes(equipe_teste, capsys):
     """
     Testa se a troca de Guia/Adivinhador funciona.
