@@ -1,45 +1,34 @@
 from typing import Dict
+from datetime import datetime, timedelta
 from src.domain.entities.equipe import Equipe
 from src.domain.entities.jogador import Jogador
 
 class Turno:
-    """
-    Controla o ciclo micro do jogo: cronômetro, palavra ativa e validação de pulos.
-    """
-    def __init__(self, dupla: Equipe, tempo_limite: int = 60, saltos_disponiveis: int = 3):
+    def __init__(self, dupla: Equipe, tempo_limite: int = 60, palavras_disponiveis: int = 4):
         self.dupla = dupla
         self.tempo_limite = tempo_limite
-        self.saltos_disponiveis = saltos_disponiveis
+        self.palavras_disponiveis = palavras_disponiveis
         self.palavra_atual = ""
+        self.timestamp_fim = None
         
         self.guia_atual: Jogador = dupla.jogador_1
         self.adivinhador_atual: Jogador = dupla.jogador_2
 
     def definir_palavra(self, palavra: str):
-        """
-        Define a palavra secreta da rodada.
-        """
         self.palavra_atual = palavra
 
     def iniciar_cronometro(self):
-        pass
+        """Calcula a data e hora exata em que o turno deve acabar."""
+        self.timestamp_fim = datetime.utcnow() + timedelta(seconds=self.tempo_limite)
 
-    def validar_chute(self, chute: str) -> bool:
+    def consumir_palavra(self) -> bool:
         """
-        Retorna True/False. Não imprime nada.
+        Tenta consumir uma palavra do orçamento do turno (seja por acerto ou pulo).
+        Retorna True se ainda houver estoque, False se o limite do turno acabou.
         """
-        if not chute or not self.palavra_atual:
-            return False
-            
-        return chute.strip().lower() == self.palavra_atual.strip().lower()
-
-    def pular_palavra(self) -> bool:
-        """
-        Tenta pular a palavra atual. Retorna True se conseguiu, False se limite excedido.
-        """
-        if self.saltos_disponiveis > 0:
-            self.saltos_disponiveis -= 1
-            return True
+        if self.palavras_disponiveis > 0:
+            self.palavras_disponiveis -= 1
+            return self.palavras_disponiveis > 0
         return False
 
     def trocar_funcoes(self) -> Dict[str, str]:

@@ -31,7 +31,7 @@ class PartidaTreinoClassica(GerenciadorDePartida):
         self._turno_atual = Turno(
             dupla=self._equipe_treino, 
             tempo_limite=self._configuracao.tempo_limite,
-            saltos_disponiveis=self._configuracao.limite_saltos
+            palavras_disponiveis=self._configuracao.palavras_por_turno
         )
         
         palavras_disponiveis = self._pacote_palavras.obter_palavras()

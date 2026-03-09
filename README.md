@@ -135,11 +135,10 @@ classDiagram
         -dupla: Equipe
         -palavra_atual: str
         -tempo_limite: int
-        -saltos_disponiveis: int
+        -palavras_por_turno: int
         +definir_palavra(str)
         +iniciar_cronometro()
-        +validar_chute(str) bool
-        +pular_palavra() bool
+        +consumir_palavra() bool
         +trocar_funcoes() dict
     }
 
