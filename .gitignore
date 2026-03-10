@@ -1,0 +1,124 @@
+# ==============================================================================
+# PYTHON CORE
+# ==============================================================================
+
+__pycache__/
+*.py[cod]
+*$py.class
+
+*.so
+
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# ==============================================================================
+# AMBIENTES VIRTUAIS (VENV)
+# ==============================================================================
+
+venv/
+.venv/
+env/
+.env/
+ENV/
+env.bak/
+venv.bak/
+
+# ==============================================================================
+# FASTAPI & WEB & DADOS
+# ==============================================================================
+
+.env
+.env.local
+
+*.sqlite3
+*.db
+*.db-journal
+
+*.log
+
+# ==============================================================================
+# PROJETO TROCADU
+# ==============================================================================
+
+data/partidas.log
+data/*.log
+
+# ==============================================================================
+# TESTES & QUALIDADE DE CÓDIGO
+# ==============================================================================
+
+.pytest_cache/
+.cache/
+
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+*.py,cover
+
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+.ruff_cache/
+
+# ==============================================================================
+# IDEs & EDITORES
+# ==============================================================================
+
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+.idea/
+
+.ipynb_checkpoints
+
+# ==============================================================================
+# SISTEMA OPERACIONAL
+# ==============================================================================
+
+.DS_Store
+.AppleDouble
+.LSOverride
+
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+*~
+
+# ==============================================================================
+# OUTROS
+# ==============================================================================
+
+client_secret.json
+credentials.json
+
+*.pem
+*.key
+
+.vercel
+
+pip-log.txt
+pip-delete-this-directory.txt
